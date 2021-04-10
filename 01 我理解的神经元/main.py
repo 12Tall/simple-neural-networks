@@ -9,10 +9,10 @@ def loadData():
         skiprows=1
     )
 
-    expData = orgData[:, 0:3]
-    resData = orgData[:, 3:4]
-    d = np.insert(expData, 3, 1, axis=1)
-    return d, resData
+    exp_data = orgData[:, 0:3]
+    res_data = orgData[:, 3:4]
+    # d = np.insert(exp_data, 3, 1, axis=1)
+    return exp_data, res_data
 
 
 def initWeight(shape):
@@ -34,22 +34,22 @@ def Cost(loss):
     return np.mean(loss, axis=0)
 
 
-def Gradient(expData, resData, a):
-    return np.dot(expData.T, a - resData)/len(expData)
+def Gradient(exp_data, res_data, a):
+    return np.dot(exp_data.T, a - res_data)/len(exp_data)
 
 
 def main():
     alpha = 0.3
-    expData, resData = loadData()
-    weight = initWeight(expData.shape)
+    exp_data, res_data = loadData()
+    weight = initWeight(exp_data.shape)
 
     for i in range(10000):
-        a = Sigmoid(np.dot(expData, weight))
-        # e = Loss(a, resData)
-        grad = Gradient(expData, resData, a)
+        a = Sigmoid(np.dot(exp_data, weight))
+        # e = Loss(a, res_data)
+        grad = Gradient(exp_data, res_data, a)
         weight -= grad*alpha
 
-    print(1/(1+np.exp(-np.dot([[1, 0, 0,1]], weight))))
+    print(1/(1+np.exp(-np.dot([[0, 1, 1]], weight))))
     pass
 
 
